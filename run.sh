@@ -1,6 +1,6 @@
 #!/bin/sh
 
-NGINX_CONFIG_FILE=~/Docker-nginx-rtmp-injest/nginx.conf
+NGINX_CONFIG_FILE=/opt/nginx/conf/nginx.conf
 
 
 RTMP_CONNECTIONS=${RTMP_CONNECTIONS-1024}
