@@ -65,5 +65,3 @@ EXPOSE 1935
 EXPOSE 8080
 
 CMD /run.sh
-
-# test change

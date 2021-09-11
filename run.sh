@@ -1,12 +1,13 @@
 #!/bin/sh
 
-NGINX_CONFIG_FILE=/opt/nginx/conf/nginx.conf
+NGINX_CONFIG_FILE=~/Docker-nginx-rtmp-injest/nginx.conf
 
 
 RTMP_CONNECTIONS=${RTMP_CONNECTIONS-1024}
 RTMP_STREAM_NAMES=${RTMP_STREAM_NAMES-live,testing}
 RTMP_STREAMS=$(echo ${RTMP_STREAM_NAMES} | sed "s/,/\n/g")
 RTMP_PUSH_URLS=$(echo ${RTMP_PUSH_URLS} | sed "s/,/\n/g")
+ON_PUBLISH_URL=${ON_PUBLISH_URL-'http://localhost:8080/on_publish'}
 
 apply_config() {
 
@@ -81,6 +82,12 @@ else
     PUSH="true"
 fi
 
+if [ "x${ON_PUBLISH_URL}" = "x" ]; then
+    ON_PUBLISH="false"
+else
+    ON_PUBLISH="true"
+fi
+
 HLS="true"
 
 for STREAM_NAME in $(echo ${RTMP_STREAMS}) 
@@ -91,7 +98,14 @@ cat >>${NGINX_CONFIG_FILE} <<!EOF
         application ${STREAM_NAME} {
             live on;
             record off;
-            on_publish http://localhost:8080/on_publish;
+!EOF
+if [ "${ON_PUBLISH}" = "true" ]; then
+cat >>${NGINX_CONFIG_FILE} <<!EOF
+            on_publish ${ON_PUBLISH_URL};
+!EOF
+    ON_PUBLISH="false"
+fi
+
 !EOF
 if [ "${HLS}" = "true" ]; then
 cat >>${NGINX_CONFIG_FILE} <<!EOF
@@ -102,6 +116,7 @@ cat >>${NGINX_CONFIG_FILE} <<!EOF
 !EOF
     HLS="false"
 fi
+
     if [ "$PUSH" = "true" ]; then
         for PUSH_URL in $(echo ${RTMP_PUSH_URLS}); do
             echo "Pushing stream to ${PUSH_URL}"
