@@ -3,6 +3,9 @@ docker build -t jivanjangid/streamx-injest .
 # ADDON
 accepts ON_PUBLISH_URL to auth streams [optional]
 
+# Forked from
+jasonrivers/nginx-rtmp
+
 # Docker-nginx-rtmp
 Docker image for an RTMP/HLS server running on nginx
 
