@@ -1,5 +1,5 @@
 # Build cmd 
-docker build -t jivanjangid/streamx-injest .
+docker build -t jivanjangid/streamx-injest:tagname .
 # ADDON
 accepts ON_PUBLISH_URL to auth streams [optional]
 
