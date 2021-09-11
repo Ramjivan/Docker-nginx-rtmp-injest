@@ -1,3 +1,8 @@
+# Build cmd 
+docker build -t jivanjangid/streamx-injest .
+# ADDON
+accepts ON_PUBLISH_URL to auth streams [optional]
+
 # Docker-nginx-rtmp
 Docker image for an RTMP/HLS server running on nginx
 
@@ -26,6 +31,7 @@ You can enable multiple streams on the container by setting RTMP_STREAM_NAMES wh
 docker run      \
     -p 1935:1935        \
     -p 8080:8080        \
+    -e ON_PUBLISH_URL=http://host:port/path       \
     -e RTMP_STREAM_NAMES=live,teststream1,teststream2   \
     jasonrivers/nginx-rtmp
 ```
