@@ -7,7 +7,7 @@ RTMP_CONNECTIONS=${RTMP_CONNECTIONS-1024}
 RTMP_STREAM_NAMES=${RTMP_STREAM_NAMES-live,testing}
 RTMP_STREAMS=$(echo ${RTMP_STREAM_NAMES} | sed "s/,/\n/g")
 RTMP_PUSH_URLS=$(echo ${RTMP_PUSH_URLS} | sed "s/,/\n/g")
-ON_PUBLISH_URL=${ON_PUBLISH_URL-'http://localhost:8080/on_publish'}
+API_HOST=${INJEST_API_HOST-'http://host.docker.internal:8080'}
 
 apply_config() {
 
@@ -82,10 +82,10 @@ else
     PUSH="true"
 fi
 
-if [ "x${ON_PUBLISH_URL}" = "x" ]; then
-    ON_PUBLISH="false"
+if [ "x${API_HOST}" = "x" ]; then
+    API="false"
 else
-    ON_PUBLISH="true"
+    API="true"
 fi
 
 HLS="true"
@@ -99,14 +99,17 @@ cat >>${NGINX_CONFIG_FILE} <<!EOF
             live on;
             record off;
 !EOF
-if [ "${ON_PUBLISH}" = "true" ]; then
+if [ "${API}" = "true" ]; then
 cat >>${NGINX_CONFIG_FILE} <<!EOF
-            on_publish ${ON_PUBLISH_URL};
+            on_publish ${API_HOST}/on_publish;
+            on_done ${API_HOST}/on_done;
+            exec_publish ${API_HOST}/exec_publish;
+            exec_publish_done ${API_HOST}/exec_publish_done;
 !EOF
-    ON_PUBLISH="false"
+    API="false"
 fi
 
-!EOF
+
 if [ "${HLS}" = "true" ]; then
 cat >>${NGINX_CONFIG_FILE} <<!EOF
             hls on;
@@ -143,6 +146,6 @@ else
     echo "CONFIG EXISTS - Not creating!"
 fi
 
-echo "Starting server
+echo "Starting server"
 /opt/nginx/sbin/nginx -g "daemon off;"
 
