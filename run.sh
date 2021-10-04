@@ -103,8 +103,8 @@ if [ "${API}" = "true" ]; then
 cat >>${NGINX_CONFIG_FILE} <<!EOF
             on_publish ${API_HOST}/on_publish;
             on_done ${API_HOST}/on_done;
-            exec_publish ${API_HOST}/exec_publish;
-            exec_publish_done ${API_HOST}/exec_publish_done;
+            exec_publish curl ${API_HOST}/exec_publish;
+            exec_publish_done curl ${API_HOST}/exec_publish_done;
 !EOF
     API="false"
 fi
