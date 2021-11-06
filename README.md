@@ -3,6 +3,13 @@ docker login
 export tagname=v2
 docker build -t jivanjangid/streamx-injest:${tagname} .
 docker push jivanjangid/streamx-injest:${tagname}
+
+# OCI [inspect cmd carefully]
+docker login uk-london-1.ocir.io
+username - lrqqxehccngb/oracleidentitycloudservice/ramjeewanj@gmail.com
+password - fD+YVqAKJ:]>X)_A{xu3
+docker tag jivanjangid/streamx-injest:v2 uk-london-1.ocir.io/lrqqxehccngb/streamway-injest:v1 
+docker push uk-london-1.ocir.io/lrqqxehccngb/streamway-injest:v1
 # ADDON
 accepts ON_PUBLISH_URL to auth streams [optional]
 

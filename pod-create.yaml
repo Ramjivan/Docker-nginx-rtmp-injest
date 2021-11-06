@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: injest
+labels:
+name: injest
+spec:
+containers:
+  - name: streamway-injest
+image: uk-london-1.ocir.io/lrqqxehccngb/streamway-injest:v1
+ports:
+- containerPort: 80
