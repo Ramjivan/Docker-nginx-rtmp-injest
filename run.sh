@@ -8,6 +8,7 @@ RTMP_STREAM_NAMES=${RTMP_STREAM_NAMES-live,testing}
 RTMP_STREAMS=$(echo ${RTMP_STREAM_NAMES} | sed "s/,/\n/g")
 RTMP_PUSH_URLS=$(echo ${RTMP_PUSH_URLS} | sed "s/,/\n/g")
 API_HOST=${INJEST_API_HOST}
+INJEST_ONLY=${INJEST_ONLY-false}
 
 apply_config() {
 
@@ -88,6 +89,12 @@ else
     API="true"
 fi
 
+if [ "x${API_HOST}" = "x" ]; then
+    API="false"
+else
+    API="true"
+fi
+
 HLS="true"
 
 for STREAM_NAME in $(echo ${RTMP_STREAMS}) 
@@ -99,6 +106,14 @@ cat >>${NGINX_CONFIG_FILE} <<!EOF
             live on;
             record off;
 !EOF
+
+if [ "${INJEST_ONLY}" = "true" ]; then
+cat >>${NGINX_CONFIG_FILE} <<!EOF
+            deny play all;
+!EOF
+    INJEST_ONLY="false"
+fi
+
 if [ "${API}" = "true" ]; then
 cat >>${NGINX_CONFIG_FILE} <<!EOF
             on_publish ${API_HOST}/on_publish;

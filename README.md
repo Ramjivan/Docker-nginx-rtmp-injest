@@ -4,6 +4,15 @@ export tagname=v2
 docker build -t jivanjangid/streamx-injest:${tagname} .
 docker push jivanjangid/streamx-injest:${tagname}
 
+# ENV VARIABLES
+
+## INJEST_API_HOST 
+To get a webhook hit on_publish on_done exec_publish and exec_publish_done events
+
+## INJEST_ONLY
+to make container injest only and deny all play requests. useful for testing
+to enable set value to "true"
+
 # OCI [inspect cmd carefully]
 docker login uk-london-1.ocir.io
 username - lrqqxehccngb/oracleidentitycloudservice/ramjeewanj@gmail.com
