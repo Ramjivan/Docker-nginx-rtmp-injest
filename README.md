@@ -14,11 +14,16 @@ to make container injest only and deny all play requests. useful for testing
 to enable set value to "true"
 
 # OCI [inspect cmd carefully]
+# Login
 docker login uk-london-1.ocir.io
 username - lrqqxehccngb/oracleidentitycloudservice/ramjeewanj@gmail.com
 password - fD+YVqAKJ:]>X)_A{xu3
 docker tag jivanjangid/streamx-injest:v2 uk-london-1.ocir.io/lrqqxehccngb/streamway-injest:v1 
 docker push uk-london-1.ocir.io/lrqqxehccngb/streamway-injest:v1
+
+# RUN Container
+docker run -d -p 1935:1935 --name simple-rtmp-server uk-london-1.ocir.io/lrqqxehccngb/streamway-injest:v1
+
 # ADDON
 accepts ON_PUBLISH_URL to auth streams [optional]
 
